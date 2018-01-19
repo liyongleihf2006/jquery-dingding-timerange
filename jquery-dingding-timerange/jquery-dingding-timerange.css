@@ -1,0 +1,78 @@
+.dingdingTimerange{
+    
+}
+.dingdingTimerange-mask{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    z-index: 1;
+    background: rgba(0,0,0,.1);
+}
+.dingdingTimerange-dialog{
+    width: 400px;
+    background: white;
+}
+.dingdingTimerange-dialog-header{
+    padding: 10px 30px;
+    background: #f0f3f5;
+}
+.dingdingTimerange-dialog-close{
+    float: right;
+    cursor: pointer;
+    color: darkgray;
+}
+.dingdingTimerange-dialog-close:hover{
+    color: gray;
+}
+.dingdingTimerange-dialog-content{
+    height: 120px;
+    padding: 12px 30px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.dingdingTimerange-dialog-item{
+    padding-left: 16px;
+    cursor: pointer;
+    line-height: 2em;
+}
+.dingdingTimerange-dialog-item:hover{
+    background: #f0f3f5;
+}
+.dingdingTimerange-dialog-footer{
+    padding: 6px 30px;
+    border-top: 1px solid gray;
+    overflow: auto;
+}
+.dingdingTimerange-dialog-cancel{
+    text-decoration: none;
+    padding: 6px 20px;
+    background: #f0f3f5;
+    border-radius: 4px;
+    border: 1px solid #e0e3e5;
+    float: right;
+    cursor: pointer;
+}
+.dingdingTimerange-dialog-cancel:hover{
+    color: rgb(100,100,255);
+    border-color: currentColor;
+}
+.center-box{
+    writing-mode: tb-lr;
+    writing-mode: vertical-lr;
+    text-align: center;
+}
+.center-wrap{
+    writing-mode: lr-tb;
+    writing-mode: horizontal-tb;
+    text-align: center;
+    width: 100%;
+    display: inline-block;
+}
+.center-content{
+    display: inline-block;
+    text-align: left;
+    text-align: initial;
+}

@@ -1,0 +1,120 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>模拟钉钉中的会议预定时间范围选择控件</title>
+    <link rel="stylesheet" href="./jquery-dingding-timerange/jquery-dingding-timerange.css">
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="./jquery-dingding-timerange/jquery-dingding-timerange.js"></script>
+    <style>
+        .dingdingTimerange{
+            background: lightblue;
+        }
+        .dingding-timerange-control-value{
+            float: right;
+            cursor: pointer;
+        }
+        .dingding-timerange-control-split{
+            border-top: 1px solid lightcoral;
+        }
+    </style>
+</head>
+<body>
+    <b>模拟钉钉中的会议预定时间范围选择控件</b>
+    <p style="white-space:pre">
+        1.当没有设置开始时间的时候:
+            (1).当前时间不是标准间隔(interval)的倍数时,开始时间是当前时间之后的标准间隔(interval)的倍数的时间
+            (2).当前时间是标准间隔(interval)的倍数时,就使用当前时间
+            (2).若没有设置结束时间,结束时间是开始时间之后一个标准间隔(interval)的时间
+        2.当设置了开始时间的时候:
+            (1).当传入的开始时间不是标准间隔(interval)的倍数时,开始时间是传入的开始时间之后的标准间隔(interval)的倍数的时间
+            (2).当传入的开始时间是标准间隔(interval)的倍数时,就使用传入的开始时间
+        3.当设置了结束时间的时候:
+            (1).当传入的结束时间不是标准间隔(interval)的倍数时,结束时间是传入的开始时间之后的标准间隔(interval)的倍数的时间
+            (2).当传入的结束时间是标准间隔(interval)的倍数时,就使用传入的结束时间
+        4.当设置的可选时间范围的起始值小于当前时间时,使用当前时间作为可选时间范围的起始
+        5.当设置了排除时间段时
+            (1).开始时间的选择中,开始时间不能选每个排除时间段中的值(包括每个排除时间段开始的值,但可能可以选结束的值)
+            (2).结束时间的选择中,结束时间不能选每个排除时间段中的值(包括每个排除时间段结束的值,但可能可以选开始的值)
+            (3).结束时间的选择范围只能是在开始时间至开始时间之后的第一个排除时间段的开始的值之间的值
+    </p>
+    <div id="timerange"></div>
+    <button id="setTime">赋予时间</button>
+    <button id="getTime">获取时间</button>
+    <script>
+        $("#setTime").on("click",function(){
+            var startTime=transformTimeStrToMillisecond("13:30"),
+                endTime=transformTimeStrToMillisecond("13:50");
+            $("#timerange").dingdingTimerange("setTime",startTime,endTime);
+        });
+        $("#getTime").on("click",function(){
+            var time=$("#timerange").dingdingTimerange("getTime");
+            var startTime = transformMillisecondToTimeStr(time.startTime);
+            var endTime = transformMillisecondToTimeStr(time.endTime);
+            alert("startTime:"+startTime+",endTime:"+endTime);
+        });
+        //将字符串的时间转换为毫秒
+        function transformTimeStrToMillisecond(time){
+            var time = time.split(/\s*:\s*/);
+            var hour = time[0]||0;
+            var minute = time[1]||0;
+            return (hour*60+(+minute))*60*1000;
+        }
+        //将毫秒转换为字符串的时间
+        function transformMillisecondToTimeStr(millisecond){
+            var hour = Math.floor(millisecond/(60*60*1000));
+                var minute = Math.floor(millisecond%(60*60*1000)/(60*1000));
+                hour = (100+hour+"").slice(1);
+                minute = (100+minute+"").slice(1);
+            return hour+":"+minute;
+        }
+        $("#timerange").dingdingTimerange({
+            startLimitTime:(6*60+12)*60*1000,
+            endLimitTime:24*60*60*1000,
+            startTime:transformTimeStrToMillisecond("11:30"),
+            endTime:transformTimeStrToMillisecond("13:40"),
+            maxIntervalCount:2,
+            interval:20*60*1000,
+            excludeTimes:[
+                [transformTimeStrToMillisecond("22:30"),transformTimeStrToMillisecond("23:00")],
+                [transformTimeStrToMillisecond("23:15"),transformTimeStrToMillisecond("23:30")]
+            ],
+            controlFormatter:function(startTime,endTime){
+                var _this = this;
+                return [
+                    $("<div/>").append(
+                        $("<span/>",{
+                            "class":"dingding-timerange-control-label",
+                            "text":"开始时间"
+                        }),
+                        $("<span/>",{
+                            "class":"dingding-timerange-control-value",
+                            "text":transformMillisecondToTimeStr(startTime),
+                            "click":function(){
+                                _this.dingdingTimerange("openStartPanel");
+                            }
+                        })
+                    ),
+                    $("<div/>",{
+                        "class":"dingding-timerange-control-split"
+                    }),
+                    $("<div/>").append(
+                        $("<span/>",{
+                            "class":"dingding-timerange-control-label",
+                            "text":"结束时间"
+                        }),
+                        $("<span/>",{
+                            "class":"dingding-timerange-control-value",
+                            "text":transformMillisecondToTimeStr(endTime),
+                            "click":function(){
+                                _this.dingdingTimerange("openEndPanel");
+                            }
+                        })
+                    ),
+                ]
+            }
+        });
+    </script>
+</body>
+</html>
