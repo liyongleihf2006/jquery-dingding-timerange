@@ -10,6 +10,8 @@
  *      maxIntervalCount:2, //结束时间和开始时间之间最多有几个单位的间隔
  *      excludeTimes:[[startTime,endTime],...],//要排除掉的时间段,这些时间段中的时间都会被排除在外
  *      controlFormatter:function(startTime,endTime),//必须配置,开始时间和结束时间在页面中的格式化
+ *      onPanelOpen:function(){},//修改时间面板打开事件
+ *      onPanelClose:function(){},//修改时间面板关闭事件
  * }
  * methods:
  *      openStartPanel //打开修改开始时间的弹窗
@@ -68,6 +70,7 @@
         maxIntervalCount:undefined,
         interval:15*60*1000,
         excludeTimes:[],
+        onPanelClose:function(){},
         controlFormatter:function(startTime,endTime){
 
         }
@@ -101,19 +104,25 @@
     }
     function openStartPanel(){
         var $self=this,
-        params=$self.data("dingdingTimerange");
+        params=$self.data("dingdingTimerange"),
+        onPanelOpen=params.onPanelOpen;
         params._openStartPanel=true;
+        onPanelOpen.call($self);
     }
     function openEndPanel(){
         var $self=this,
-        params=$self.data("dingdingTimerange");
+        params=$self.data("dingdingTimerange"),
+        onPanelOpen=params.onPanelOpen;
         params._openEndPanel=true;
+        onPanelOpen.call($self);
     }
     function closePanel(){
         var $self=this,
-        params=$self.data("dingdingTimerange");
+        params=$self.data("dingdingTimerange"),
+        onPanelClose=params.onPanelClose;
         params._openStartPanel=false;
         params._openEndPanel=false;
+        onPanelClose.call($self);
         _render.call($self);
     }
     function setTime(startTime,endTime){
