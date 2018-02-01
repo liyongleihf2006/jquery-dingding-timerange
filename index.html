@@ -33,7 +33,7 @@
         3.当设置了结束时间的时候:
             (1).当传入的结束时间不是标准间隔(interval)的倍数时,结束时间是传入的开始时间之后的标准间隔(interval)的倍数的时间
             (2).当传入的结束时间是标准间隔(interval)的倍数时,就使用传入的结束时间
-        4.当设置的可选时间范围的起始值小于当前时间时,使用当前时间作为可选时间范围的起始
+        4.当设置了startLimitFromCurrentTime为true(默认值)时候,当设置的可选时间范围的起始值小于当前时间时,使用当前时间作为可选时间范围的起始
         5.当设置了排除时间段时
             (1).开始时间的选择中,开始时间不能选每个排除时间段中的值(包括每个排除时间段开始的值,但可能可以选结束的值)
             (2).结束时间的选择中,结束时间不能选每个排除时间段中的值(包括每个排除时间段结束的值,但可能可以选开始的值)
@@ -71,6 +71,7 @@
         }
         $("#timerange").dingdingTimerange({
             startLimitTime:(6*60+12)*60*1000,
+            startLimitFromCurrentTime:true,
             endLimitTime:24*60*60*1000,
             startTime:transformTimeStrToMillisecond("11:30"),
             endTime:transformTimeStrToMillisecond("13:40"),
