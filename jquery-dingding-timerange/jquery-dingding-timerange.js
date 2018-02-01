@@ -4,7 +4,7 @@
  * options={
  *      interval:15*60*1000, //单位时间段的间隔时间
  *      startLimitTime:6*60*60*1000, //可选时间范围的起始
- *      startLimitFromCurrentTime:false,//若当前时间大于设置的startLimitTime时,时间范围是否从当前时间开始
+ *      startLimitFromCurrentTime:true,//若当前时间大于设置的startLimitTime时,时间范围是否从当前时间开始
  *      endLimitTime:24*60*60*1000, //可选时间范围的结束
  *      startTime:new Date().getHours()*60*60*1000+new Date().getMinutes()*60*1000, //开始时间
  *      endTime:new Date().getHours()*60*60*1000+new Date().getMinutes()*60*1000+interval, //结束时间
