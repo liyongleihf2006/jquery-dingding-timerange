@@ -24,9 +24,9 @@
     <b>模拟钉钉中的会议预定时间范围选择控件</b>
     <p style="white-space:pre">
         1.当没有设置开始时间的时候:
-            (1).当前时间不是标准间隔(interval)的倍数时,开始时间是当前时间之后的标准间隔(interval)的倍数的时间
-            (2).当前时间是标准间隔(interval)的倍数时,就使用当前时间
-            (2).若没有设置结束时间,结束时间是开始时间之后一个标准间隔(interval)的时间
+            (1).当没有设置开始时间时,开始时间会自动设置为从包括当前时间延后的第一个非排除时间(每个时间都是最小时间间隔的倍数)
+            (3).当前时间是标准间隔(interval)的倍数时,就使用当前时间
+            (4).若没有设置结束时间,结束时间是开始时间之后一个标准间隔(interval)的时间
         2.当设置了开始时间的时候:
             (1).当传入的开始时间不是标准间隔(interval)的倍数时,开始时间是传入的开始时间之后的标准间隔(interval)的倍数的时间
             (2).当传入的开始时间是标准间隔(interval)的倍数时,就使用传入的开始时间
@@ -73,13 +73,15 @@
             startLimitTime:(6*60+12)*60*1000,
             startLimitFromCurrentTime:true,
             endLimitTime:24*60*60*1000,
-            startTime:transformTimeStrToMillisecond("11:30"),
-            endTime:transformTimeStrToMillisecond("13:40"),
+            /* startTime:transformTimeStrToMillisecond("11:30"),
+            endTime:transformTimeStrToMillisecond("13:40"), */
             maxIntervalCount:2,
             interval:20*60*1000,
             excludeTimes:[
                 [transformTimeStrToMillisecond("22:30"),transformTimeStrToMillisecond("23:00")],
-                [transformTimeStrToMillisecond("23:15"),transformTimeStrToMillisecond("23:30")]
+                [transformTimeStrToMillisecond("23:15"),transformTimeStrToMillisecond("23:30")],
+                [transformTimeStrToMillisecond("14:20"),transformTimeStrToMillisecond("14:40")],
+                [transformTimeStrToMillisecond("14:40"),transformTimeStrToMillisecond("15:00")]
             ],
             onPanelOpen:function(){
                 console.log("panelOpen");

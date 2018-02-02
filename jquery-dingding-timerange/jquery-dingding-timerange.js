@@ -84,6 +84,31 @@
             var minutes = Math.floor(time%(60*60*1000)/(60*1000))*(60*1000);
             return hours + (minutes%interval?(Math.floor(minutes/interval)+1)*interval:minutes);
     }
+    function _generateStartTime(params,nowTimes){
+        if(params.startTime){
+            return; 
+        }
+        var startLimitTime = params.startLimitTime,
+        endLimitTime = params.endLimitTime,
+        excludeTimes = params.excludeTimes,
+        interval = params.interval,
+        times=[];
+        for(var i=startLimitTime;i<=endLimitTime;i+=interval){
+            times.push(i);
+        }
+        times.pop();
+        times = times.filter(function(time){
+            return excludeTimes.every(function(excludeTime){
+                return time<excludeTime[0]||time>=excludeTime[1];
+            })
+        });
+        times.some(function(time){
+            if(time >= nowTimes){
+                params.startTime = time;
+                return true;
+            }
+        });
+    }
     function _init(params){
         params.startLimitTime = _prettyTime(params.startLimitTime,params.interval);
         params.endLimitTime = _prettyTime(params.endLimitTime,params.interval);
@@ -94,7 +119,7 @@
             startTime = params.startTime,
             nowTimes = _prettyTime(new Date().getHours()*60*60*1000+new Date().getMinutes()*60*1000,params.interval);
         if(!startTime){
-            params.startTime = nowTimes;
+            _generateStartTime(params,nowTimes); 
         }
         if(startLimitTime<nowTimes&&params.startLimitFromCurrentTime){
             params.startLimitTime = nowTimes;
