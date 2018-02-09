@@ -88,6 +88,7 @@
         if(params.startTime){
             return; 
         }
+        var startLimitFromCurrentTime = params.startLimitFromCurrentTime;
         var startLimitTime = params.startLimitTime,
         endLimitTime = params.endLimitTime,
         excludeTimes = params.excludeTimes,
@@ -102,12 +103,16 @@
                 return time<excludeTime[0]||time>=excludeTime[1];
             })
         });
-        times.some(function(time){
-            if(time >= nowTimes){
-                params.startTime = time;
-                return true;
-            }
-        });
+        if(startLimitFromCurrentTime){
+            times.some(function(time){
+                if(time >= nowTimes){
+                    params.startTime = time;
+                    return true;
+                }
+            });
+        }else{
+            params.startTime = times[0];
+        }
     }
     function _init(params){
         params.startLimitTime = _prettyTime(params.startLimitTime,params.interval);
